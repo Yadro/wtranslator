@@ -16,7 +16,10 @@ public class Lex {
 
         int len = code.length(),
             beginToken = 0,
-            finalState = 0;
+            beginLastToken = 0,
+            finalState = 0,
+            finalStatePos = 0,
+            lastFinalState = 0;
 
         Boolean checked = false;
 
@@ -30,31 +33,30 @@ public class Lex {
 
             if ((finalState = finalState(state)) == -1) {
 
-                showError(i+1);
-                beginToken = i+1;
-                state = initState();
+                if (lastFinalState == -1) {
 
-/*            } else if (finalState > 40) { // breckets or split
-                System.out.println("'" + code.substring(beginToken, i+1) + "' is " + finalState);
-                // pushHashTable(token, finalState);
-                beginToken = i+1;
-                state = initState();*/
-
-            } else if (finalState != 0) {
-                lastState = state;
-                state[5] = 0;
-                state[6] = 0;
-                state = whatIs(code.charAt(++i), state);
-                checked = true;
-
-                if (state[5] > 0 || state[6] > 0) {
-                    System.out.println("'" + code.substring(beginToken, i+1) + "' is " + lastState.toString());
-                    // pushHashTable(token, finalState);
-                    state = initState();
+                    showError(i);
                     beginToken = i+1;
-                }
-            }
+                    state = initState();
+                    lastFinalState = 0;
 
+                } else {
+
+                    System.out.print("'" + code.substring(beginLastToken, finalStatePos + 1) + "' is ");
+                    printCode(lastFinalState);
+                    // pushHashTable(token, finalState);
+                    beginLastToken = finalStatePos + 1;
+                    lastFinalState = 0;
+                    state = initState();
+                    i--;
+
+                }
+            } else if (finalState > 0) {
+
+                lastFinalState = finalState;
+                finalStatePos =  i;
+
+            }
         }
         return 0;
     }
@@ -247,10 +249,75 @@ public class Lex {
         System.out.println(code.substring(b, e));
         for (int i = b; i < e; i++) {
             if (i == pos) {
-                System.out.println("^");
+                System.out.print("^");
                 break;
             }
             else System.out.print(' ');
+        }
+        System.out.println();
+    }
+
+    private void printCode(int code) {
+        switch (code) {
+            case 1:
+                System.out.println("ID");
+                return;
+            case 2:
+                System.out.println("INT");
+                return;
+            case 10:
+                System.out.println("==");
+                return;
+            case 11:
+                System.out.println("!=");
+                return;
+            case 12:
+                System.out.println("<=");
+                return;
+            case 13:
+                System.out.println(">=");
+                return;
+            case 14:
+                System.out.println("<");
+                return;
+            case 15:
+                System.out.println(">");
+                return;
+            case 20:
+                System.out.println("IF");
+                return;
+            case 21:
+                System.out.println("INT");
+                return;
+            case 22:
+                System.out.println("ELSE");
+                return;
+            case 23:
+                System.out.println("RETURN");
+                return;
+            case 31:
+                System.out.println("+");
+                return;
+            case 32:
+                System.out.println("-");
+                return;
+            case 33:
+                System.out.println("=");
+                return;
+            case 41:
+            case 42:
+            case 43:
+            case 44:
+                System.out.println("BRECKETS");
+                return;
+            case 51:
+            case 52:
+            case 53:
+            case 54:
+            case 55:
+                System.out.println("SPLITS");
+                return;
+
         }
     }
 }
