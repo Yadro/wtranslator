@@ -97,24 +97,24 @@ public class Lex {
     private int parseAttitude(char ch, int state) {
         switch (ch) {
             case '=':
-                if (state == 0) return 3;
-                if (state == 1) return 5;
-                if (state == 2) return 6;
-                if (state == 3) return 7;
-                if (state == 4) return 8;
+                if (state == 0) return 1;
+                if (state == 1) return 10;
+                if (state == 2) return 11;
+                if (state == 14) return 12;
+                if (state == 15) return 13;
                 return -1;
             case '!':
-                if (state == 0) return 4;
+                if (state == 0) return 2;
                 return -1;
             case '<':
-                if (state == 0) return 1;
+                if (state == 0) return 14;
                 return -1;
             case '>':
-                if (state == 0) return 2;
+                if (state == 0) return 15;
                 return -1;
 
         }
-        return 0;
+        return -1;
     }
 
     private int parseInt(char ch, int state) {
