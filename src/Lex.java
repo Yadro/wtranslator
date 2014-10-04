@@ -9,27 +9,49 @@ public class Lex {
 
     public Lex(String code) {
         this.code = code;
+        parse(code);
     }
 
     public int parse(String code) {
         int len = code.length();
+        int lastState = 0;
+        int[] state = initState();
 
         for (int i = 0; i < len; i++) {
-            //
+
+            state = whatIs(code.charAt(i), state);
+
         }
         return 0;
+    }
+
+    private int[] initState() {
+        int[] state = {0, 0, 0, 0, 0, 0};
+        return state;
     }
 
     private int[] whatIs(char ch, int[] state) {
 
         state[0] = parseId(ch, state[0]);
-        state[1] = parseAttitude(ch, state[1]);
+        state[1] = parseKeyWord(ch, state[1]);
         state[2] = parseInt(ch, state[2]);
-        state[3] = parseKeyWord(ch, state[3]);
+        state[3] = parseAttitude(ch, state[2]);
         state[4] = parseMethod(ch, state[4]);
         state[5] = parseMark(ch, state[5]);
 
         return state;
+    }
+
+    private int finalState(int[] state) {
+
+        if (state[0] > 0) return state[0];
+        if (state[1] > 1000) return state[1];
+        if (state[2] > 0) return state[2];
+        if (state[3] > 1000) return state[3];
+        if (state[4] > 0) return state[4];
+        if (state[5] > 0) return state[5];
+
+        return 0;
     }
 
 
@@ -131,11 +153,10 @@ public class Lex {
     private int parseS(char ch, int state) {
         if (state == 0) {
             switch (ch) {
-                case '{': return 1;
-                case '}': return 2;
-                case '(': return 3;
-                case ')': return 4;
-                case ';': return 5;
+                case '\n': return 1;
+                case '\t': return 2;
+                case '\r': return 3;
+                case ' ': return 4;
             }
         }
         return -1;
