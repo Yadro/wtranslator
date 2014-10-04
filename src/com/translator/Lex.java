@@ -26,26 +26,21 @@ public class Lex {
 
         for (int i = 0; i < len; i++) {
 
-            if (!checked) {
-                state = whatIs(code.charAt(i), state);
-            } else checked = false;
+            state = whatIs(code.charAt(i), state);
 
-            if ((finalState = finalState(state)) == -1)
-            {
+            if ((finalState = finalState(state)) == -1) {
+
                 showError(i+1);
-
                 beginToken = i+1;
                 state = initState();
-            }
-            else if (finalState >= 20)  // breckets or split
-            {
+
+/*            } else if (finalState > 40) { // breckets or split
                 System.out.println("'" + code.substring(beginToken, i+1) + "' is " + finalState);
                 // pushHashTable(token, finalState);
                 beginToken = i+1;
-                state = initState();
-            }
-            else if (finalState != 0)
-            {
+                state = initState();*/
+
+            } else if (finalState != 0) {
                 lastState = state;
                 state[5] = 0;
                 state[6] = 0;
@@ -84,13 +79,13 @@ public class Lex {
 
     private int finalState(int[] state) {
 
-        if (state[1] >= 20) return state[1]; // KEYWORD
-        if (state[0] > 0) return state[0]; // ID
-        if (state[2] > 0) return state[2]; // INT
-        if (state[3] >= 10) return state[3]; // if
-        if (state[4] > 0) return state[4]; // OPERATORS
-        if (state[5] > 0) return 30 + state[5]; // BRECKETS
-        if (state[6] > 0) return 40 + state[6]; // SPLITS
+        if (state[1] >= 20) return state[1];      // KEYWORD   [20-23]
+        if (state[0] > 0) return 1;               // ID        [1]
+        if (state[2] > 0) return 2;               // INT       [2]
+        if (state[3] >= 10) return  state[3];     // if        [10-15]
+        if (state[4] > 0) return 30 + state[4];   // OPERATORS [31-33]
+        if (state[5] > 0) return 40 + state[5];   // BRECKETS  [41-44]
+        if (state[6] > 0) return 50 + state[6];   // SPLITS    [51-55]
 
         if (state[0] == -1 ||
             state[1] == -1 ||
