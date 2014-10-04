@@ -1,8 +1,8 @@
 package com.translator;
 
-/**
- * Created by i-am on 03.10.14.
- */
+
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 public class Lex {
 
     private final String code;
@@ -14,34 +14,42 @@ public class Lex {
 
     public int parse(String code) {
 
-        int len = code.length();
-        int[] state = initState();
-
-        int beginToken = 0,
-            lastState = 0,
+        int len = code.length(),
+            beginToken = 0,
             finalState = 0;
+
+        Boolean checked = false;
+
+        int[] state = initState(),
+              lastState;
 
 
         for (int i = 0; i < len; i++) {
 
-            state = whatIs(code.charAt(i), state);
+            if (checked == false) {
+                state = whatIs(code.charAt(i), state);
+            } else checked = false;
 
-            if (finalState == -1){
+            if ((finalState = finalState(state)) == -1) {
 
                 showError(i);
-                state = initState();
 
-            } else if ((finalState = finalState(state)) != 0) {
-
-                System.out.println(code.substring(beginToken, i));
-                /*state = whatIs(code.charAt(++i), state);
-                if (state[5] > 0 || state[6] > 0) {
-
-                }*/
-
-                // pushHashTable(token, finalState);
-                state = initState();
                 beginToken = i + 1;
+                state = initState();
+
+            } else if (finalState != 0) {
+
+                lastState = state;
+                state = whatIs(code.charAt(++i), state);
+                checked = true;
+                i--;
+
+                if (state[5] > 0 || state[6] > 0) {
+                    System.out.println(code.substring(beginToken, i-1) + " is " + finalState);
+                    // pushHashTable(token, finalState);
+                    state = initState();
+                    beginToken = i + 1;
+                }
             }
 
         }
@@ -233,15 +241,15 @@ public class Lex {
     }
 
     private void printErrorSubstring(int b, int e, int pos) {
+        System.out.println("ERROR:");
+
         System.out.println(code.substring(b, e));
         for (int i = b; i < e; i++) {
             if (i == pos) {
-                System.out.print('^');
+                System.out.println("^");
                 break;
             }
             else System.out.print(' ');
         }
     }
-
-
 }
