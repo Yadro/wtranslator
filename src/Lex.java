@@ -46,6 +46,36 @@ public class Lex {
                 if (state == 10) return 12;
                 return -1;
         }
+        return -1;
+    }
+
+    private int parseId(char ch, int state) {
+        switch (ch) {
+            // TODO
+        }
+        return 0;
+    }
+
+    private int parseAttitude(char ch, int state) {
+        switch (ch) {
+            case '=':
+                if (state == 0) return 3;
+                if (state == 1) return 5;
+                if (state == 2) return 6;
+                if (state == 3) return 7;
+                if (state == 4) return 8;
+                return -1;
+            case '!':
+                if (state == 0) return 4;
+                return -1;
+            case '<':
+                if (state == 0) return 1;
+                return -1;
+            case '>':
+                if (state == 0) return 2;
+                return -1;
+
+        }
         return 0;
     }
 
