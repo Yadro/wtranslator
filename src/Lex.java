@@ -24,13 +24,20 @@ public class Lex {
 
             state = whatIs(code.charAt(i), state);
 
-            if ((finalState = finalState(state)) != 0) {
+            if (finalState == -1){
+                // TODO обработка ошибок
+                System.out.print("ERROR: ");
 
-                // pushHashTable()
+            } else if ((finalState = finalState(state)) != 0) {
+
+                state = whatIs(code.charAt(++i), state);
+                if (state[5] > 0 || state[6] > 0) {
+
+                }
+
+                // pushHashTable(token, finalState);
                 state = initState();
                 beginToken = i + 1;
-            } else {
-                // TODO обработка ошибок
             }
 
         }
@@ -66,6 +73,16 @@ public class Lex {
         if (state[4] > 0) return state[4]; // OPERATORS
         if (state[5] > 0) return state[5]; // BRECKETS
         if (state[6] > 0) return state[6]; // SPLITS
+
+        if (state[0] == -1 ||
+            state[1] == -1 ||
+            state[2] == -1 ||
+            state[3] == -1 ||
+            state[4] == -1 ||
+            state[5] == -1 ||
+            state[6] == -1 ) {
+            return -1; // ERROR
+        }
 
         return 0;
     }
