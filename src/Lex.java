@@ -195,5 +195,49 @@ public class Lex {
         return -1;
     }
 
+    private void showError(int pos) {
+        int len = code.length();
+
+        for (int i = pos; i >= 0; i--) {
+            switch (code.charAt(i)) {
+                case '\n':
+                case '\t':
+                case '\r':
+                    for (int j = pos; j > len; j++) {
+                        switch (code.charAt(j)) {
+                            case '\n':
+                            case '\t':
+                            case '\r':
+                                printErrorSubstring(i + 1, j, pos);
+                                return;
+                        }
+                    }
+                    printErrorSubstring(i + 1, len - 1, pos);
+                    return;
+            }
+        }
+        for (int j = pos; j < len; j++) {
+            switch (code.charAt(j)) {
+                case '\n':
+                case '\t':
+                case '\r':
+                    printErrorSubstring(0, j, pos);
+                    return;
+            }
+        }
+        printErrorSubstring(0, len - 1, pos);
+    }
+
+    private void printErrorSubstring(int b, int e, int pos) {
+        System.out.println(code.substring(b, e));
+        for (int i = b; i < e; i++) {
+            if (i == pos) {
+                System.out.print('^');
+                break;
+            }
+            else System.out.print(' ');
+        }
+    }
+
 
 }
