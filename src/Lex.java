@@ -14,19 +14,27 @@ public class Lex {
 
     public int parse(String code) {
         int len = code.length();
+
         int lastState = 0;
+        int finalState = 0;
         int[] state = initState();
 
         for (int i = 0; i < len; i++) {
 
             state = whatIs(code.charAt(i), state);
 
+            if ((finalState = finalState(state)) != 0) {
+
+            } else {
+                // TODO обработка ошибок
+            }
+
         }
         return 0;
     }
 
     private int[] initState() {
-        int[] state = {0, 0, 0, 0, 0, 0};
+        int[] state = {0, 0, 0, 0, 0, 0, 0};
         return state;
     }
 
@@ -38,6 +46,7 @@ public class Lex {
         state[3] = parseAttitude(ch, state[2]);
         state[4] = parseMethod(ch, state[4]);
         state[5] = parseMark(ch, state[5]);
+        state[6] = parseS(ch, state[6]);
 
         return state;
     }
@@ -47,9 +56,10 @@ public class Lex {
         if (state[0] > 0) return state[0];
         if (state[1] >= 20) return state[1];
         if (state[2] > 0) return state[2];
-        if (state[3] > 1000) return state[3];
+        if (state[3] >= 10) return state[3];
         if (state[4] > 0) return state[4];
         if (state[5] > 0) return state[5];
+        if (state[6] > 0) return state[6];
 
         return 0;
     }
