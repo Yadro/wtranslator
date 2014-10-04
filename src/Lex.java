@@ -79,6 +79,38 @@ public class Lex {
         return 0;
     }
 
+    private int parseInt(char ch, int state) {
+        if (state == 0 || state == 1) {
+            if (Character.isDigit(ch)) {
+                return 1;
+            }
+        }
+        return -1;
+    }
+
+    private int parseMethod(char ch, int state) {
+        if (state == 0) {
+            switch (ch) {
+                case '+': return 1;
+                case '-': return 2;
+                case '=': return 3;
+            }
+        }
+        return -1;
+    }
+
+    private int parseMark(char ch, int state) {
+        if (state == 0) {
+            switch (ch) {
+                case '{': return 1;
+                case '}': return 2;
+                case '(': return 3;
+                case ')': return 4;
+                case ';': return 5;
+            }
+        }
+        return -1;
+    }
 
 
 }
