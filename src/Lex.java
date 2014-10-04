@@ -5,19 +5,20 @@ public class Lex {
 
     private final String code;
 
-
-
     public Lex(String code) {
         this.code = code;
         parse(code);
     }
 
     public int parse(String code) {
-        int len = code.length();
 
-        int lastState = 0;
-        int finalState = 0;
+        int len = code.length();
         int[] state = initState();
+
+        int beginToken = 0,
+            lastState = 0,
+            finalState = 0;
+
 
         for (int i = 0; i < len; i++) {
 
@@ -25,6 +26,9 @@ public class Lex {
 
             if ((finalState = finalState(state)) != 0) {
 
+                // pushHashTable()
+                state = initState();
+                beginToken = i + 1;
             } else {
                 // TODO обработка ошибок
             }
@@ -43,8 +47,8 @@ public class Lex {
         state[0] = parseId(ch, state[0]);
         state[1] = parseKeyWord(ch, state[1]);
         state[2] = parseInt(ch, state[2]);
-        state[3] = parseAttitude(ch, state[2]);
-        state[4] = parseMethod(ch, state[4]);
+        state[3] = parseIf(ch, state[2]);
+        state[4] = parseOperator(ch, state[4]);
         state[5] = parseMark(ch, state[5]);
         state[6] = parseS(ch, state[6]);
 
@@ -53,12 +57,14 @@ public class Lex {
 
     private int finalState(int[] state) {
 
-        if (state[0] > 0) return state[0];
-        if (state[1] >= 20) return state[1];
-        if (state[2] > 0) return state[2];
-        if (state[3] >= 10) return state[3];
-        if (state[4] > 0) return state[4];
-        if (state[5] > 0) return state[5];
+        // TODO error parse
+
+        if (state[0] > 0) return state[0]; // ID
+        if (state[1] >= 20) return state[1]; // KEYWORD
+        if (state[2] > 0) return state[2]; // INT
+        if (state[3] >= 10) return state[3]; // if
+        if (state[4] > 0) return state[4]; // OPERATORS
+        if (state[5] > 0) return state[5]; //
         if (state[6] > 0) return state[6];
 
         return 0;
@@ -104,7 +110,7 @@ public class Lex {
         return -1;
     }
 
-    private int parseAttitude(char ch, int state) {
+    private int parseIf(char ch, int state) {
         switch (ch) {
             case '=':
                 if (state == 0) return 1;
@@ -136,7 +142,7 @@ public class Lex {
         return -1;
     }
 
-    private int parseMethod(char ch, int state) {
+    private int parseOperator(char ch, int state) {
         if (state == 0) {
             switch (ch) {
                 case '+': return 1;
