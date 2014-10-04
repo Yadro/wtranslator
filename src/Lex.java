@@ -15,9 +15,21 @@ public class Lex {
         int len = code.length();
 
         for (int i = 0; i < len; i++) {
-
+            //
         }
         return 0;
+    }
+
+    private int[] whatIs(char ch, int[] state) {
+
+        state[0] = parseId(ch, state[0]);
+        state[1] = parseAttitude(ch, state[1]);
+        state[2] = parseInt(ch, state[2]);
+        state[3] = parseKeyWord(ch, state[3]);
+        state[4] = parseMethod(ch, state[4]);
+        state[5] = parseMark(ch, state[5]);
+
+        return state;
     }
 
 
@@ -50,10 +62,14 @@ public class Lex {
     }
 
     private int parseId(char ch, int state) {
-        switch (ch) {
-            // TODO
+        if (state == 0) {
+            if (Character.isLetter(ch)) return 1;
         }
-        return 0;
+        if (state > 0 && state < 9) {
+            if (Character.isLetter(ch) || Character.isDigit(ch))
+                return ch + 1;
+        }
+        return -1;
     }
 
     private int parseAttitude(char ch, int state) {
@@ -100,6 +116,19 @@ public class Lex {
     }
 
     private int parseMark(char ch, int state) {
+        if (state == 0) {
+            switch (ch) {
+                case '{': return 1;
+                case '}': return 2;
+                case '(': return 3;
+                case ')': return 4;
+                case ';': return 5;
+            }
+        }
+        return -1;
+    }
+
+    private int parseS(char ch, int state) {
         if (state == 0) {
             switch (ch) {
                 case '{': return 1;
