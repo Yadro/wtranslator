@@ -45,7 +45,7 @@ public class Lex {
     private int finalState(int[] state) {
 
         if (state[0] > 0) return state[0];
-        if (state[1] > 1000) return state[1];
+        if (state[1] >= 20) return state[1];
         if (state[2] > 0) return state[2];
         if (state[3] > 1000) return state[3];
         if (state[4] > 0) return state[4];
@@ -58,26 +58,26 @@ public class Lex {
     private int parseKeyWord(char ch, int state) {
         switch(ch) {
             case 'i': if (state == 0) return 1; return -1;
-            case 'f': if (state == 5) return 5; return -1;
-            case 'l': if (state == 2) return 6; return -1;
-            case 's': if (state == 6) return 9; return -1;
+            case 'f': if (state == 1) return 20; return -1;
+            case 'l': if (state == 2) return 5; return -1;
+            case 's': if (state == 5) return 7; return -1;
             case 'r':
-                if (state == 0) return 3;
-                if (state == 12) return 13;
+                if (state == 0) return 6;
+                if (state == 9) return 10;
                 return -1;
             case 'n':
                 if (state == 1) return 4;
-                if (state == 13) return 14;
+                if (state == 10) return 23;
                 return -1;
             case 't':
-                if (state == 4) return 8;
-                if (state == 7) return 10;
+                if (state == 4) return 21;
+                if (state == 6) return 8;
                 return -1;
             case 'e':
                 if (state == 0) return 2;
-                if (state == 3) return 7;
-                if (state == 9) return 11;
-                if (state == 10) return 12;
+                if (state == 3) return 6;
+                if (state == 7) return 22;
+                if (state == 8) return 9;
                 return -1;
         }
         return -1;
