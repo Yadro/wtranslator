@@ -50,7 +50,7 @@ public class Lex {
         state[3] = parseIf(ch, state[2]);
         state[4] = parseOperator(ch, state[4]);
         state[5] = parseMark(ch, state[5]);
-        state[6] = parseS(ch, state[6]);
+        state[6] = parseSplit(ch, state[6]);
 
         return state;
     }
@@ -64,8 +64,8 @@ public class Lex {
         if (state[2] > 0) return state[2]; // INT
         if (state[3] >= 10) return state[3]; // if
         if (state[4] > 0) return state[4]; // OPERATORS
-        if (state[5] > 0) return state[5]; //
-        if (state[6] > 0) return state[6];
+        if (state[5] > 0) return state[5]; // BRECKETS
+        if (state[6] > 0) return state[6]; // SPLITS
 
         return 0;
     }
@@ -160,19 +160,19 @@ public class Lex {
                 case '}': return 2;
                 case '(': return 3;
                 case ')': return 4;
-                case ';': return 5;
             }
         }
         return -1;
     }
 
-    private int parseS(char ch, int state) {
+    private int parseSplit(char ch, int state) {
         if (state == 0) {
             switch (ch) {
                 case '\n': return 1;
                 case '\t': return 2;
                 case '\r': return 3;
                 case ' ': return 4;
+                case ';': return 5;
             }
         }
         return -1;
