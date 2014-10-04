@@ -1,3 +1,5 @@
+package com.translator;
+
 /**
  * Created by i-am on 03.10.14.
  */
@@ -25,15 +27,17 @@ public class Lex {
             state = whatIs(code.charAt(i), state);
 
             if (finalState == -1){
-                // TODO обработка ошибок
-                System.out.print("ERROR: ");
+
+                showError(i);
+                state = initState();
 
             } else if ((finalState = finalState(state)) != 0) {
 
-                state = whatIs(code.charAt(++i), state);
+                System.out.println(code.substring(beginToken, i));
+                /*state = whatIs(code.charAt(++i), state);
                 if (state[5] > 0 || state[6] > 0) {
 
-                }
+                }*/
 
                 // pushHashTable(token, finalState);
                 state = initState();
