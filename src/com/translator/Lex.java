@@ -26,29 +26,37 @@ public class Lex {
 
         for (int i = 0; i < len; i++) {
 
-            if (checked == false) {
+            if (!checked) {
                 state = whatIs(code.charAt(i), state);
             } else checked = false;
 
-            if ((finalState = finalState(state)) == -1) {
+            if ((finalState = finalState(state)) == -1)
+            {
+                showError(i+1);
 
-                showError(i);
-
-                beginToken = i + 1;
+                beginToken = i+1;
                 state = initState();
-
-            } else if (finalState != 0) {
-
+            }
+            else if (finalState >= 20)  // breckets or split
+            {
+                System.out.println("'" + code.substring(beginToken, i+1) + "' is " + finalState);
+                // pushHashTable(token, finalState);
+                beginToken = i+1;
+                state = initState();
+            }
+            else if (finalState != 0)
+            {
                 lastState = state;
+                state[5] = 0;
+                state[6] = 0;
                 state = whatIs(code.charAt(++i), state);
                 checked = true;
-                i--;
 
                 if (state[5] > 0 || state[6] > 0) {
-                    System.out.println(code.substring(beginToken, i-1) + " is " + finalState);
+                    System.out.println("'" + code.substring(beginToken, i+1) + "' is " + lastState.toString());
                     // pushHashTable(token, finalState);
                     state = initState();
-                    beginToken = i + 1;
+                    beginToken = i+1;
                 }
             }
 
@@ -76,15 +84,13 @@ public class Lex {
 
     private int finalState(int[] state) {
 
-        // TODO error parse
-
-        if (state[0] > 0) return state[0]; // ID
         if (state[1] >= 20) return state[1]; // KEYWORD
+        if (state[0] > 0) return state[0]; // ID
         if (state[2] > 0) return state[2]; // INT
         if (state[3] >= 10) return state[3]; // if
         if (state[4] > 0) return state[4]; // OPERATORS
-        if (state[5] > 0) return state[5]; // BRECKETS
-        if (state[6] > 0) return state[6]; // SPLITS
+        if (state[5] > 0) return 30 + state[5]; // BRECKETS
+        if (state[6] > 0) return 40 + state[6]; // SPLITS
 
         if (state[0] == -1 ||
             state[1] == -1 ||
@@ -134,7 +140,7 @@ public class Lex {
         }
         if (state > 0 && state < 9) {
             if (Character.isLetter(ch) || Character.isDigit(ch))
-                return ch + 1;
+                return state + 1;
         }
         return -1;
     }
