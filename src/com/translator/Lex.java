@@ -34,7 +34,7 @@ public class Lex {
                 if (lastFinalState == -1) {
 
                     showError(i);
-                    beginToken = i+1;
+                    beginPos = i+1;
                     state = initState();
                     lastFinalState = 0;
 
@@ -42,9 +42,11 @@ public class Lex {
 
                     System.out.print("'" + code.substring(beginPos, finalStatePos + 1) + "' is ");
                     printCode(lastFinalState);
+                    System.out.println();
+
                     // pushHashTable(token, finalState);
                     beginPos = finalStatePos + 1;
-                    lastFinalState = 0;
+                    lastFinalState = finalState;
                     state = initState();
                     i--;
 
