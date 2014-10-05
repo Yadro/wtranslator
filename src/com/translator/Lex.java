@@ -1,8 +1,6 @@
 package com.translator;
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 public class Lex {
 
     private final String code;
@@ -16,7 +14,7 @@ public class Lex {
 
         int len = code.length(),
             beginToken = 0,
-            beginLastToken = 0,
+            beginPos = 0,
             finalState = 0,
             finalStatePos = 0,
             lastFinalState = 0;
@@ -42,10 +40,10 @@ public class Lex {
 
                 } else {
 
-                    System.out.print("'" + code.substring(beginLastToken, finalStatePos + 1) + "' is ");
+                    System.out.print("'" + code.substring(beginPos, finalStatePos + 1) + "' is ");
                     printCode(lastFinalState);
                     // pushHashTable(token, finalState);
-                    beginLastToken = finalStatePos + 1;
+                    beginPos = finalStatePos + 1;
                     lastFinalState = 0;
                     state = initState();
                     i--;
@@ -135,7 +133,7 @@ public class Lex {
         if (state == 0) {
             if (Character.isLetter(ch)) return 1;
         }
-        if (state > 0 && state < 9) {
+        if (state > 0 && state < 8) {
             if (Character.isLetter(ch) || Character.isDigit(ch))
                 return state + 1;
         }
