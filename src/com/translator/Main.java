@@ -11,32 +11,32 @@ public class Main {
 
     }
 
+    public static File openFile(String name) throws FileNotFoundException {
+        File file = new File(name);
+        if (!file.exists()) {
+            throw new FileNotFoundException(file.getName());
+        }
+        return file;
+    }
+
     public static String readFile(String fileName) throws FileNotFoundException {
         StringBuffer sb = new StringBuffer();
 
+        File file = openFile(fileName);
+
         try {
-            File file = new File(fileName);
-            if (!file.exists()) {
-                throw  new FileNotFoundException(file.getName());
-            }
+            BufferedReader in = new BufferedReader(new FileReader(file.getAbsoluteFile()));
 
             try {
-                BufferedReader in = new BufferedReader(new FileReader(file.getAbsoluteFile()));
-
-                try {
-                    String s;
-                    while ((s = in.readLine()) != null) {
-                        sb.append(s);
-                        sb.append("/n");
-                    }
-                } finally {
-                    in.close();
+                String s;
+                while ((s = in.readLine()) != null) {
+                    sb.append(s);
+                    sb.append('\n');
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } finally {
+                in.close();
             }
-
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -51,12 +51,12 @@ public class Main {
                 file.createNewFile();
             }
 
-            PrintWriter out = new PrintWriter(file.getAbsoluteFile());
+            PrintWriter writeFile = new PrintWriter(file.getAbsoluteFile());
 
             try {
-                out.print(text);
+                writeFile.print(text);
             } finally {
-                out.close();
+                writeFile.close();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
