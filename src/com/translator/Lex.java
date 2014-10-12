@@ -4,28 +4,65 @@ package com.translator;
 public class Lex {
 
     private final String code;
+    private final int lenght;
 
     public Lex(String code) {
         this.code = code;
+        this.lenght = this.code.length();
+
+        int position = 0;
+        while ((position = getNext(position)) != -1) {};
+
         parse(code);
     }
 
-    public int parse(String code) {
+    public int getNext(int begin) {
 
-        int len = code.length(),
-            beginToken = 0,
-            beginPos = 0,
+        int finalState = 0,
+            finalStatePos = 0,
+            lastFinalState = -1;
+
+        int[] state = initState();
+
+        for (int i = begin; i < lenght; i++) {
+
+            state = whatIs(code.charAt(i), state);
+
+            if ((finalState = finalState(state)) == -1) {
+
+                if (lastFinalState == -1) {
+
+                    showError(i);
+                    return i+1;
+
+                } else {
+
+                    System.out.print("'" + code.substring(begin, finalStatePos + 1) + "' is ");
+                    printCode(lastFinalState);
+                    System.out.println();
+                    // pushHashTable(token, finalState);
+                    return i;
+                }
+            } else if (finalState > 0) {
+
+                lastFinalState = finalState;
+                finalStatePos =  i;
+            }
+        }
+        return -1;
+    }
+
+    public void parse(String code) {
+
+        int beginPos = 0,
             finalState = 0,
             finalStatePos = 0,
             lastFinalState = 0;
 
-        Boolean checked = false;
 
-        int[] state = initState(),
-              lastState;
+        int[] state = initState();
 
-
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < lenght; i++) {
 
             state = whatIs(code.charAt(i), state);
 
@@ -58,7 +95,6 @@ public class Lex {
 
             }
         }
-        return 0;
     }
 
     private int[] initState() {
