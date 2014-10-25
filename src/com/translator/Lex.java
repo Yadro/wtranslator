@@ -286,10 +286,10 @@ public class Lex {
         System.out.println(code.substring(b, e));
         for (int i = b; i < e; i++) {
             if (i == pos) {
-                System.out.print("^");
+                System.out.print('^');
                 break;
             }
-            else System.out.print(' ');
+            else System.out.print('-');
         }
         System.out.println();
     }
