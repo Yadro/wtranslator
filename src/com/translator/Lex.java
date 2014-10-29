@@ -4,11 +4,11 @@ package com.translator;
 public class Lex {
 
     private final String code;
-    private final int lenght;
+    private final int length;
 
     public Lex(String code) {
         this.code = code;
-        this.lenght = this.code.length();
+        this.length = this.code.length();
 
         int position = 0;
         while ((position = getNext(position)) != -1) {};
@@ -24,7 +24,7 @@ public class Lex {
 
         int[] state = initState();
 
-        for (int i = begin; i < lenght; i++) {
+        for (int i = begin; i < length; i++) {
 
             state = whatIs(code.charAt(i), state);
 
@@ -62,7 +62,7 @@ public class Lex {
 
         int[] state = initState();
 
-        for (int i = 0; i < lenght; i++) {
+        for (int i = 0; i < length; i++) {
 
             state = whatIs(code.charAt(i), state);
 

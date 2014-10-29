@@ -1,6 +1,7 @@
 package com.translator;
 
 import java.io.*;
+import com.translator.Hash;
 
 public class Main {
 
