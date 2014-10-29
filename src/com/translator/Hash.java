@@ -46,7 +46,7 @@ public class Hash {
                 throw new HashTableElemNotFound();
             }
 
-            if (this.hash_table[i] == null) {
+            if (this.hash_table[i].equals(value)) {
                 return this.hash_table[i];
             }
             i++;
