@@ -10,10 +10,10 @@ public class Main {
             System.out.println("usage: <input file> <output file>");
             System.exit(0);
         }
-        IOclass iOclass = new IOclass(args[0], args[1]);
-        String code = iOclass.read();
+        new IOclass(args[0], args[1]);
+        String code = IOclass.getText();
         new Lex(code);
-        iOclass.close();
+        IOclass.close();
     }
 
     public static File openFile(String name) throws FileNotFoundException {

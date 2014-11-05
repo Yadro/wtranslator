@@ -9,11 +9,13 @@ public class IOclass {
 
     private static String input;
     private static String output;
+    private static String readText;
     private static PrintWriter writer;
 
     public IOclass(String in, String out) {
         input = in;
         output = out;
+        readText = read();
         writer = writeFile(input);
     }
 
@@ -25,7 +27,7 @@ public class IOclass {
         return file;
     }
 
-    public static String read() throws FileNotFoundException {
+    private static String read() {
         StringBuffer sb = new StringBuffer();
         try {
             File file = openFile(input);
@@ -51,7 +53,7 @@ public class IOclass {
         }
     }
 
-    public static PrintWriter writeFile(String fileName) {
+    private static PrintWriter writeFile(String fileName) {
         File file = new File(fileName);
         try {
             if (!file.exists()) {
@@ -73,5 +75,9 @@ public class IOclass {
 
     public static void close() {
         writer.close();
+    }
+
+    public static String getText() {
+        return readText;
     }
 }
