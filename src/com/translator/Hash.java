@@ -5,11 +5,13 @@ import com.translator.exceptions.HashTableIsFull;
 
 public class Hash {
 
+    private final String name_table;
     private final String[] keys;
     private final String[] values;
     private final int size;
 
-    public Hash(int size) {
+    public Hash(String name_table, int size) {
+        this.name_table = name_table;
         this.size = size;
         this.keys = new String[size+1];
         this.values = new String[size+1];
@@ -60,6 +62,8 @@ public class Hash {
     }
 
     public void print_table() {
+        System.out.println("Table" + name_table + ":");
+        IOclass.write("Table" + name_table + ":");
         for (int i = 0; i < this.size; i++) {
             if (keys[i] != null) {
                 System.out.println("[" + i + "]\t" + this.keys[i] + ": " + this.values[i]);
