@@ -16,7 +16,7 @@ public class IOclass {
         input = in;
         output = out;
         readText = read();
-        writer = writeFile(input);
+        writer = writeFile(output);
     }
 
     private static File openFile(String name) throws FileNotFoundException {
