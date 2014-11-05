@@ -10,6 +10,7 @@ public class Lex {
     private final String code;
     private final int length;
     private int pos = 0;
+    private int read_line = 0;
     private final Hash[] hash_table;
 
     public Lex(String code) {
@@ -40,13 +41,17 @@ public class Lex {
 
     public int getNext() {
         String substr;
+        char ch;
+        boolean nline = false;
         int finalState,
             finalStatePos = 0,
             lastFinalState = -1;
         int[] state = initState();
 
         for (int i = this.pos; i < length; i++) {
-            state = whatIs(code.charAt(i), state);
+            ch = code.charAt(i);
+            if (ch == '\n') nline = true;
+            state = whatIs(ch, state);
             if ((finalState = finalState(state)) == -1) {
                 if (lastFinalState == -1) {
                     showError(i);
@@ -61,12 +66,13 @@ public class Lex {
                     } catch (HashTableIsFull e) {
                         e.printStackTrace();
                     }
+                    if (nline) this.read_line++;
                     this.pos = i;
                     return finalStatePos;
                 }
             } else if (finalState > 0) {
                 lastFinalState = finalState;
-                finalStatePos =  i;
+                finalStatePos = i;
             }
         }
         return -1;
@@ -371,5 +377,9 @@ public class Lex {
                 return;
 
         }
+    }
+
+    private void writerToFile() {
+
     }
 }
