@@ -18,8 +18,10 @@ public class LexTestJUnit {
 
     @Test
     public void test() {
-        int pos = 0;
-        while ((pos = this.lex.getNext(pos)) != -1) {}
+        int state;
+        while ((state = this.lex.getNext()) != -1) {
+            System.out.println(state);
+        }
     }
 
 }

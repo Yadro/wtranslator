@@ -1,50 +1,61 @@
 package com.translator;
 
 
+import com.translator.exceptions.HashTableIsFull;
+
 public class Lex {
+
+    public static final int COUNT_TABLES = 8;
 
     private final String code;
     private final int length;
+    private int pos = 0;
+    private final Hash[] hash_table;
 
     public Lex(String code) {
         this.code = code;
         this.length = this.code.length();
+        this.hash_table = new Hash[8];
+        for (int i = 0; i < COUNT_TABLES; i++) {
+            this.hash_table[i] = new Hash(this.length);
+        }
 
-        int position = 0;
-        while ((position = getNext(position)) != -1) {};
+        int state;
+        while ((state = getNext()) != -1) {
+            System.out.println(state);
+        };
 
-        parse(code);
+//        parse(code);
     }
 
-    public int getNext(int begin) {
-
-        int finalState = 0,
+    public int getNext() {
+        String substr;
+        int finalState,
             finalStatePos = 0,
             lastFinalState = -1;
-
         int[] state = initState();
 
-        for (int i = begin; i < length; i++) {
-
+        for (int i = this.pos; i < length; i++) {
             state = whatIs(code.charAt(i), state);
-
             if ((finalState = finalState(state)) == -1) {
-
                 if (lastFinalState == -1) {
-
                     showError(i);
-                    return i+1;
-
+                    this.pos = i + 1;
+                    return 0;
                 } else {
-
-                    System.out.print("'" + code.substring(begin, finalStatePos + 1) + "' is ");
+                    substr = code.substring(this.pos, finalStatePos + 1);
+                    System.out.print("'" + substr + "' is ");
                     printCode(lastFinalState);
                     System.out.println();
-                    // pushHashTable(token, finalState);
-                    return i;
+                    try {
+                        this.hash_table[whenTypeOfToken(lastFinalState)].push(substr, substr);
+                    } catch (HashTableIsFull e) {
+                        e.printStackTrace();
+                    }
+                    this.pos = i;
+                    return finalStatePos;
                 }
             } else if (finalState > 0) {
-
                 lastFinalState = finalState;
                 finalStatePos =  i;
             }
@@ -58,41 +69,30 @@ public class Lex {
             finalState = 0,
             finalStatePos = 0,
             lastFinalState = 0;
-
-
         int[] state = initState();
 
         for (int i = 0; i < length; i++) {
-
             state = whatIs(code.charAt(i), state);
-
             if ((finalState = finalState(state)) == -1) {
 
                 if (lastFinalState == -1) {
-
                     showError(i);
                     beginPos = i+1;
                     state = initState();
                     lastFinalState = 0;
-
                 } else {
-
                     System.out.print("'" + code.substring(beginPos, finalStatePos + 1) + "' is ");
                     printCode(lastFinalState);
                     System.out.println();
 
-                    // pushHashTable(token, finalState);
                     beginPos = finalStatePos + 1;
                     lastFinalState = finalState;
                     state = initState();
                     i--;
-
                 }
             } else if (finalState > 0) {
-
                 lastFinalState = finalState;
                 finalStatePos =  i;
-
             }
         }
     }
@@ -103,7 +103,6 @@ public class Lex {
     }
 
     private int[] whatIs(char ch, int[] state) {
-
         state[0] = parseId(ch, state[0]);
         state[1] = parseKeyWord(ch, state[1]);
         state[2] = parseInt(ch, state[2]);
@@ -111,12 +110,10 @@ public class Lex {
         state[4] = parseOperator(ch, state[4]);
         state[5] = parseMark(ch, state[5]);
         state[6] = parseSplit(ch, state[6]);
-
         return state;
     }
 
     private int finalState(int[] state) {
-
         if (state[1] >= 20) return state[1];      // KEYWORD   [20-23]
         if (state[0] > 0) return 1;               // ID        [1]
         if (state[2] > 0) return 2;               // INT       [2]
@@ -124,7 +121,6 @@ public class Lex {
         if (state[4] > 0) return 30 + state[4];   // OPERATORS [31-33]
         if (state[5] > 0) return 40 + state[5];   // BRECKETS  [41-44]
         if (state[6] > 0) return 50 + state[6];   // SPLITS    [51-55]
-
         if (state[0] == -1 ||
             state[1] == -1 ||
             state[2] == -1 ||
@@ -134,8 +130,18 @@ public class Lex {
             state[6] == -1 ) {
             return -1; // ERROR
         }
-
         return 0;
+    }
+
+    private int whenTypeOfToken(int state) {
+        if (state == 1) return 0; // id
+        if (state == 2) return 2; // int
+        if (state < 20) return 3; // if
+        if (state < 30) return 1; // keyword
+        if (state < 40) return 4; // operator
+        if (state < 50) return 5; // breckets
+        if (state < 60) return 6; // splits
+        return -1;
     }
 
 
