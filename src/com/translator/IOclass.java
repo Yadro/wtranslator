@@ -7,17 +7,17 @@ import java.io.*;
  */
 public class IOclass {
 
-    private String input;
-    private String output;
-    private PrintWriter writer;
+    private static String input;
+    private static String output;
+    private static PrintWriter writer;
 
     public IOclass(String in, String out) {
-        this.input = in;
-        this.output = out;
-        this.writer = writeFile(this.input);
+        input = in;
+        output = out;
+        writer = writeFile(input);
     }
 
-    private File openFile(String name) throws FileNotFoundException {
+    private static File openFile(String name) throws FileNotFoundException {
         File file = new File(name);
         if (!file.exists()) {
             throw new FileNotFoundException(file.getName());
@@ -25,11 +25,10 @@ public class IOclass {
         return file;
     }
 
-    public String read() throws FileNotFoundException {
+    public static String read() throws FileNotFoundException {
         StringBuffer sb = new StringBuffer();
-
         try {
-            File file = openFile(this.input);
+            File file = openFile(input);
             try {
                 BufferedReader in = new BufferedReader(new FileReader(file.getAbsoluteFile()));
                 try {
@@ -46,7 +45,7 @@ public class IOclass {
             }
             return sb.toString();
         } catch (FileNotFoundException e) {
-            System.out.println("File " + this.input + " not found");
+            System.out.println("File " + input + " not found");
             System.exit(0);
             return "";
         }
@@ -64,15 +63,15 @@ public class IOclass {
         }
     }
 
-    public void write(String text) {
+    public static void write(String text) {
         try {
-            this.writer.print(text);
+            writer.print(text);
         } catch (Exception e){
             System.out.println("Error of write to file");
         }
     }
 
-    public void close() {
-        this.writer.close();
+    public static void close() {
+        writer.close();
     }
 }
