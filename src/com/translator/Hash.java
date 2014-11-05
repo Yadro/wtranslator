@@ -18,7 +18,7 @@ public class Hash {
     }
 
 
-    public void push(String key, String value) throws HashTableIsFull {
+    public int push(String key, String value) throws HashTableIsFull {
         boolean fl = false;
         for(int hash = getHash(key), i = hash;; i++) {
             if (i > this.size) {
@@ -30,7 +30,7 @@ public class Hash {
             if (this.keys[i] == null) {
                 this.keys[i] = key;
                 this.values[i] = value;
-                return;
+                return i;
             }
         }
     }
@@ -62,8 +62,8 @@ public class Hash {
     }
 
     public void print_table() {
-        System.out.println("Table" + name_table + ":");
-        IOclass.write("Table" + name_table + ":");
+        System.out.println("Table " + name_table + ":");
+        IOclass.write("\nTable " + name_table + ":");
         for (int i = 0; i < this.size; i++) {
             if (keys[i] != null) {
                 System.out.println("[" + i + "]\t" + this.keys[i] + ": " + this.values[i]);

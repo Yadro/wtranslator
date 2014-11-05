@@ -43,7 +43,9 @@ public class Lex {
         String substr;
         char ch;
         boolean nline = false;
-        int finalState,
+        int index = 0,
+            type_token,
+            finalState,
             finalStatePos = 0,
             lastFinalState = -1;
         int[] state = initState();
@@ -59,15 +61,21 @@ public class Lex {
                     return 0;
                 } else {
                     substr = code.substring(this.pos, finalStatePos + 1);
+                    type_token = whenTypeOfToken(lastFinalState);
+
                     System.out.print("'" + substr + "' is ");
                     printCode(lastFinalState);
+
                     try {
-                        this.hash_table[whenTypeOfToken(lastFinalState)].push(substr, substr);
+                        index = this.hash_table[type_token].push(substr, substr);
                     } catch (HashTableIsFull e) {
                         e.printStackTrace();
                     }
+
                     if (nline) this.read_line++;
                     this.pos = i;
+
+                    writerToFile(this.read_line, lastFinalState, type_token, index);
                     return finalStatePos;
                 }
             } else if (finalState > 0) {
@@ -379,7 +387,34 @@ public class Lex {
         }
     }
 
-    private void writerToFile() {
-
+    private void writerToFile(int line, int state, int type_token, int index) {
+        String nameOfTable;
+        switch (type_token) {
+            case 0: // id
+                nameOfTable = "id";
+                break;
+            case 2: // int
+                nameOfTable = "int";
+                break;
+            case 3: // if
+                nameOfTable = "if";
+                break;
+            case 1: // keyword
+                nameOfTable = "keyword";
+                break;
+            case 4: // operator
+                nameOfTable = "operator";
+                break;
+            case 5: // breckets
+                nameOfTable = "breckets";
+                break;
+            case 6: // splits
+                nameOfTable = "splits";
+                break;
+            default:
+                nameOfTable = "null";
+                break;
+        }
+        IOclass.write(line + " Code: " + state + " Table: '"+ nameOfTable + "' [" + index + "]" );
     }
 }
