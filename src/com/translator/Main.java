@@ -7,8 +7,10 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 
         String code = readFile("input.txt");
+        PrintWriter writer = openFileForWriting("output.txt");
+        writeToFile(writer, "lol");
         new Lex(code);
-
+        writer.close();
     }
 
     public static File openFile(String name) throws FileNotFoundException {
@@ -43,23 +45,23 @@ public class Main {
         return sb.toString();
     }
 
-    public static void writeFile(String fileName, String text) {
+    public static PrintWriter openFileForWriting(String fileName) {
         File file = new File(fileName);
-
         try {
             if (!file.exists()) {
                 file.createNewFile();
             }
-
-            PrintWriter writeFile = new PrintWriter(file.getAbsoluteFile());
-
-            try {
-                writeFile.print(text);
-            } finally {
-                writeFile.close();
-            }
+            return new PrintWriter(file.getAbsoluteFile());
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void writeToFile(PrintWriter writer, String text) {
+        try {
+            writer.print(text);
+        } catch (Exception e){
+            System.out.println("Error of write to file");
         }
     }
 }

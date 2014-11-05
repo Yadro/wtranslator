@@ -26,6 +26,11 @@ public class Lex {
             System.out.println();
         }
 
+        for (int i = 0; i < COUNT_TABLES; i++) {
+            System.out.println("\nTable " + i + ":");
+            this.hash_table[i].print_table();
+        }
+
 //        parse(code);
     }
 

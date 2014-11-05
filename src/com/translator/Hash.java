@@ -62,7 +62,7 @@ public class Hash {
     public void print_table() {
         for (int i = 0; i < this.size; i++) {
             if (keys[i] != null) {
-                System.out.println("[" + i + "] " + this.keys[i] + ": " + this.values[i]);
+                System.out.println("[" + i + "]\t" + this.keys[i] + ": " + this.values[i]);
             }
         }
         return;
