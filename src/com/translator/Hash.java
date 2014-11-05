@@ -5,40 +5,37 @@ import com.translator.exceptions.HashTableIsFull;
 
 public class Hash {
 
-    private final String[] hash_table;
+    private final String[] keys;
+    private final String[] values;
     private final int size;
 
     public Hash(int size) {
         this.size = size;
-        this.hash_table = new String[size+1];
+        this.keys = new String[size+1];
+        this.values = new String[size+1];
     }
 
 
-    public void push(String value) throws HashTableIsFull {
+    public void push(String key, String value) throws HashTableIsFull {
         boolean fl = false;
-        int hash = getHash(value);
-        int i = hash;
-        while(true) {
+        for(int hash = getHash(key), i = hash;; i++) {
             if (i > this.size) {
                 i = 0;
                 fl = true;
             } else if (fl && i > hash) {
                 throw new HashTableIsFull();
             }
-
-            if (this.hash_table[i] == null) {
-                this.hash_table[i] = value;
+            if (this.keys[i] == null) {
+                this.keys[i] = key;
+                this.values[i] = value;
                 return;
             }
-            i++;
         }
     }
 
-    public String find(String value) throws HashTableElemNotFound {
+    public String find(String key) throws HashTableElemNotFound {
         boolean fl = false;
-        int hash = getHash(value);
-        int i = hash;
-        while(true) {
+        for(int hash = getHash(key), i = hash;; i++) {
             if (i > this.size) {
                 i = 0;
                 fl = true;
@@ -46,10 +43,9 @@ public class Hash {
                 throw new HashTableElemNotFound();
             }
 
-            if (this.hash_table[i].equals(value)) {
-                return this.hash_table[i];
+            if (this.keys[i].equals(key)) {
+                return this.values[i];
             }
-            i++;
         }
     }
 
