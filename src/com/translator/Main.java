@@ -6,11 +6,10 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        String code = readFile("input.txt");
-        PrintWriter writer = openFileForWriting("output.txt");
-        writeToFile(writer, "lol");
+        IOclass iOclass = new IOclass("input.txt", "output.txt");
+        String code = iOclass.read();
         new Lex(code);
-        writer.close();
+        iOclass.close();
     }
 
     public static File openFile(String name) throws FileNotFoundException {

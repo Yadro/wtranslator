@@ -27,22 +27,29 @@ public class IOclass {
 
     public String read() throws FileNotFoundException {
         StringBuffer sb = new StringBuffer();
-        File file = openFile(this.input);
+
         try {
-            BufferedReader in = new BufferedReader(new FileReader(file.getAbsoluteFile()));
+            File file = openFile(this.input);
             try {
-                String s;
-                while ((s = in.readLine()) != null) {
-                    sb.append(s);
-                    sb.append('\n');
+                BufferedReader in = new BufferedReader(new FileReader(file.getAbsoluteFile()));
+                try {
+                    String s;
+                    while ((s = in.readLine()) != null) {
+                        sb.append(s);
+                        sb.append('\n');
+                    }
+                } finally {
+                    in.close();
                 }
-            } finally {
-                in.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            return sb.toString();
+        } catch (FileNotFoundException e) {
+            System.out.println("File " + this.input + " not found");
+            System.exit(0);
+            return "";
         }
-        return sb.toString();
     }
 
     public static PrintWriter writeFile(String fileName) {
