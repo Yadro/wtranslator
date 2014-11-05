@@ -58,4 +58,13 @@ public class Hash {
         }
         return (int)(key % this.size);
     }
+
+    public void print_table() {
+        for (int i = 0; i < this.size; i++) {
+            if (keys[i] != null) {
+                System.out.println("[" + i + "] " + this.keys[i] + ": " + this.values[i]);
+            }
+        }
+        return;
+    }
 }

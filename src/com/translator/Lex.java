@@ -23,7 +23,8 @@ public class Lex {
         int state;
         while ((state = getNext()) != -1) {
             System.out.println(state);
-        };
+            System.out.println();
+        }
 
 //        parse(code);
     }
@@ -46,7 +47,6 @@ public class Lex {
                     substr = code.substring(this.pos, finalStatePos + 1);
                     System.out.print("'" + substr + "' is ");
                     printCode(lastFinalState);
-                    System.out.println();
                     try {
                         this.hash_table[whenTypeOfToken(lastFinalState)].push(substr, substr);
                     } catch (HashTableIsFull e) {
