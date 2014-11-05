@@ -68,6 +68,7 @@ public class IOclass {
     public static void write(String text) {
         try {
             writer.print(text);
+            writer.print("\n");
         } catch (Exception e){
             System.out.println("Error of write to file");
         }
