@@ -27,8 +27,7 @@ public class Lex {
 
         int state;
         while ((state = getNext()) != -1) {
-            System.out.println(state);
-            System.out.println();
+
         }
 
         for (int i = 0; i < COUNT_TABLES; i++) {
@@ -39,18 +38,15 @@ public class Lex {
     }
 
     public int getNext() {
-        String substr;
-        char ch;
         boolean nline = false;
         int index = 0,
-            type_token,
             finalState,
             finalStatePos = 0,
             lastFinalState = -1;
         int[] state = initState();
 
         for (int i = this.pos; i < length; i++) {
-            ch = code.charAt(i);
+            char ch = code.charAt(i);
             if (ch == '\n') nline = true;
             else nline = false;
 
@@ -62,10 +58,8 @@ public class Lex {
                     this.pos = i + 1;
                     return 0;
                 } else {
-                    substr = code.substring(this.pos, finalStatePos + 1);
-                    type_token = whenTypeOfToken(lastFinalState);
-
-                    System.out.println("'" + substr + "' is " + decode(lastFinalState));
+                    String substr = code.substring(this.pos, finalStatePos + 1);
+                    int type_token = whenTypeOfToken(lastFinalState);
 
                     try {
                         index = this.hash_table[type_token].push(substr, substr);
@@ -76,8 +70,10 @@ public class Lex {
                     if (nline) this.read_line++;
                     this.pos = i;
 
+                    System.out.println("'" + substr + "' is " + decode(lastFinalState)
+                        + " (state: " + lastFinalState + ")\n");
                     writerToFile(this.read_line, lastFinalState, type_token, index);
-                    return finalStatePos;
+                    return lastFinalState;
                 }
             } else if (finalState > 0) {
                 lastFinalState = finalState;
