@@ -52,7 +52,10 @@ public class Lex {
         for (int i = this.pos; i < length; i++) {
             ch = code.charAt(i);
             if (ch == '\n') nline = true;
+            else nline = false;
+
             state = whatIs(ch, state);
+
             if ((finalState = finalState(state)) == -1) {
                 if (lastFinalState == -1) {
                     showError(i);
@@ -62,8 +65,7 @@ public class Lex {
                     substr = code.substring(this.pos, finalStatePos + 1);
                     type_token = whenTypeOfToken(lastFinalState);
 
-                    System.out.print("'" + substr + "' is ");
-                    printCode(lastFinalState);
+                    System.out.println("'" + substr + "' is " + decode(lastFinalState));
 
                     try {
                         index = this.hash_table[type_token].push(substr, substr);
@@ -103,9 +105,7 @@ public class Lex {
                     state = initState();
                     lastFinalState = 0;
                 } else {
-                    System.out.print("'" + code.substring(beginPos, finalStatePos + 1) + "' is ");
-                    printCode(lastFinalState);
-                    System.out.println();
+                    System.out.println("'" + code.substring(beginPos, finalStatePos + 1) + "' is " + decode(lastFinalState));
 
                     beginPos = finalStatePos + 1;
                     lastFinalState = finalState;
@@ -312,8 +312,10 @@ public class Lex {
         System.out.println("ERROR:");
         IOclass.println("ERROR:");
 
-        IOclass.println(code.substring(b, e));
-        System.out.println(code.substring(b, e));
+        String substr = code.substring(b, e);
+        IOclass.println(substr);
+        System.out.println(substr);
+
         for (int i = b; i < e; i++) {
             if (i == pos) {
                 System.out.print('^');
@@ -328,68 +330,34 @@ public class Lex {
         IOclass.println("");
     }
 
-    private void printCode(int code) {
+    private String decode(int code) {
         switch (code) {
-            case 1:
-                System.out.println("ID");
-                return;
-            case 2:
-                System.out.println("INT");
-                return;
-            case 10:
-                System.out.println("==");
-                return;
-            case 11:
-                System.out.println("!=");
-                return;
-            case 12:
-                System.out.println("<=");
-                return;
-            case 13:
-                System.out.println(">=");
-                return;
-            case 14:
-                System.out.println("<");
-                return;
-            case 15:
-                System.out.println(">");
-                return;
-            case 20:
-                System.out.println("IF");
-                return;
-            case 21:
-                System.out.println("INT");
-                return;
-            case 22:
-                System.out.println("ELSE");
-                return;
-            case 23:
-                System.out.println("RETURN");
-                return;
-            case 31:
-                System.out.println("+");
-                return;
-            case 32:
-                System.out.println("-");
-                return;
-            case 33:
-                System.out.println("=");
-                return;
+            case 1: return "ID";
+            case 2: return "INT";
+            case 10: return "==";
+            case 11: return "!=";
+            case 12: return "<=";
+            case 13: return ">=";
+            case 14: return "<";
+            case 15: return ">";
+            case 20: return "IF";
+            case 21: return "INT";
+            case 22: return "ELSE";
+            case 23: return "RETURN";
+            case 31: return "+";
+            case 32: return "-";
+            case 33: return "=";
             case 41:
             case 42:
             case 43:
-            case 44:
-                System.out.println("BRECKETS");
-                return;
+            case 44: return "BRECKETS";
             case 51:
             case 52:
             case 53:
             case 54:
-            case 55:
-                System.out.println("SPLITS");
-                return;
-
+            case 55: return "SPLITS";
         }
+        return "null";
     }
 
     private void writerToFile(int line, int state, int type_token, int index) {
@@ -420,6 +388,6 @@ public class Lex {
                 nameOfTable = "null";
                 break;
         }
-        IOclass.println(line + " Code: " + state + " Table: '"+ nameOfTable + "' [" + index + "]" );
+        IOclass.println("Line: " + line + " Code: " + state + " Table: '" + nameOfTable + "' [" + index + "]");
     }
 }
