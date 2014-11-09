@@ -18,9 +18,9 @@ public class Lex {
         this.length = this.code.length();
         this.hash_table = new Hash[8];
         this.hash_table[0] = new Hash("ID", this.length);
-        this.hash_table[1] = new Hash("INT", this.length);
-        this.hash_table[2] = new Hash("if", this.length);
-        this.hash_table[3] = new Hash("KEYWORDS", this.length);
+        this.hash_table[1] = new Hash("KEYWORDS", this.length);
+        this.hash_table[2] = new Hash("INT", this.length);
+        this.hash_table[3] = new Hash("if", this.length);
         this.hash_table[4] = new Hash("OPERATORS", this.length);
         this.hash_table[5] = new Hash("BRECKETS", this.length);
         this.hash_table[6] = new Hash("SPLITS", this.length);
