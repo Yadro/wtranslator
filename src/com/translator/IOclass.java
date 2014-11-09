@@ -20,11 +20,15 @@ public class IOclass {
     }
 
     private static File openFile(String name) throws FileNotFoundException {
-        File file = new File(name);
-        if (!file.exists()) {
-            throw new FileNotFoundException(file.getName());
+        try {
+            File file = new File(name);
+            if (!file.exists()) {
+                throw new FileNotFoundException(file.getName());
+            }
+            return file;
+        } catch (NullPointerException e) {
+            throw new FileNotFoundException(name);
         }
-        return file;
     }
 
     private static String read() {
@@ -48,7 +52,6 @@ public class IOclass {
             return sb.toString();
         } catch (FileNotFoundException e) {
             System.out.println("File " + input + " not found");
-            System.exit(0);
             return "";
         }
     }
