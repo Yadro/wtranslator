@@ -65,10 +65,14 @@ public class IOclass {
         }
     }
 
-    public static void write(String text) {
+    public static void println(String text) {
+        print(text);
+        print("\n");
+    }
+
+    public static void print(String text) {
         try {
             writer.print(text);
-            writer.print("\n");
         } catch (Exception e){
             System.out.println("Error of write to file");
         }

@@ -32,7 +32,6 @@ public class Lex {
         }
 
         for (int i = 0; i < COUNT_TABLES; i++) {
-            System.out.println("\nTable " + i + ":");
             this.hash_table[i].print_table();
         }
 
@@ -311,16 +310,22 @@ public class Lex {
 
     private void printErrorSubstring(int b, int e, int pos) {
         System.out.println("ERROR:");
+        IOclass.println("ERROR:");
 
+        IOclass.println(code.substring(b, e));
         System.out.println(code.substring(b, e));
         for (int i = b; i < e; i++) {
             if (i == pos) {
                 System.out.print('^');
+                IOclass.print("^");
                 break;
+            } else {
+                System.out.print('-');
+                IOclass.print("-");
             }
-            else System.out.print('-');
         }
         System.out.println();
+        IOclass.println("");
     }
 
     private void printCode(int code) {
@@ -415,6 +420,6 @@ public class Lex {
                 nameOfTable = "null";
                 break;
         }
-        IOclass.write(line + " Code: " + state + " Table: '"+ nameOfTable + "' [" + index + "]" );
+        IOclass.println(line + " Code: " + state + " Table: '"+ nameOfTable + "' [" + index + "]" );
     }
 }

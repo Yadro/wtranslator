@@ -63,11 +63,11 @@ public class Hash {
 
     public void print_table() {
         System.out.println("Table " + name_table + ":");
-        IOclass.write("\nTable " + name_table + ":");
+        IOclass.println("\nTable " + name_table + ":");
         for (int i = 0; i < this.size; i++) {
             if (keys[i] != null) {
                 System.out.println("[" + i + "]\t" + this.keys[i] + ": " + this.values[i]);
-                IOclass.write("[" + i + "]\t" + this.keys[i] + ": " + this.values[i]);
+                IOclass.println("[" + i + "]\t" + this.keys[i] + ": " + this.values[i]);
             }
         }
         return;
