@@ -55,9 +55,8 @@ public class Lex {
                     if (nline) this.read_line++;
                     this.pos = i;
 
-                    System.out.println("'" + substr + "' is " + decode(lastFinalState)
-                        + " (state: " + lastFinalState + ")");
-                    writerToFile(this.read_line, lastFinalState, type_token, index);
+//                    System.out.println("'" + substr + "' is " + decode(lastFinalState) + " (state: " + lastFinalState + ")");
+                    writerToFile(substr, this.read_line, lastFinalState, type_token, index);
                     return lastFinalState;
                 }
             } else if (finalState > 0) {
@@ -255,6 +254,7 @@ public class Lex {
 
 
     private void showError(int pos) {
+        String err;
         int len = this.length;
         for (int i = pos; i >= 0; i--) {
             switch (code.charAt(i)) {
@@ -266,11 +266,15 @@ public class Lex {
                             case '\n':
                             case '\t':
                             case '\r':
-                                System.out.println(errorSubstring(i + 1, j, pos));
+                                err = errorSubstring(i + 1, j, pos);
+                                IOclass.println(err);
+                                System.out.println(err);
                                 return;
                         }
                     }
-                    System.out.println(errorSubstring(i + 1, len - 1, pos));
+                    err = errorSubstring(i + 1, len - 1, pos);
+                    IOclass.println(err);
+                    System.out.println(err);
                     return;
             }
         }
@@ -279,11 +283,15 @@ public class Lex {
                 case '\n':
                 case '\t':
                 case '\r':
-                    System.out.println(errorSubstring(0, j, pos));
+                    err = errorSubstring(0, j, pos);
+                    IOclass.println(err);
+                    System.out.println(err);
                     return;
             }
         }
-        System.out.println(errorSubstring(0, len - 1, pos));
+        err = errorSubstring(0, len - 1, pos);
+        IOclass.println(err);
+        System.out.println(err);
     }
 
     private String errorSubstring(int b, int e, int pos) {
@@ -331,7 +339,7 @@ public class Lex {
         return "'null'";
     }
 
-    private void writerToFile(int line, int state, int type_token, int index) {
+    private void writerToFile(String str, int line, int state, int type_token, int index) {
         String nameOfTable;
         switch (type_token) {
             case 0: // id
@@ -359,6 +367,6 @@ public class Lex {
                 nameOfTable = "null";
                 break;
         }
-        IOclass.println("Line: " + line + " Code: " + state + " Table: '" + nameOfTable + "' [" + index + "]");
+        IOclass.println("\"" + str + "\" \tLine: " + line + " \tCode: " + state + " \tTable: '" + nameOfTable + "' [" + index + "]");
     }
 }
