@@ -109,7 +109,7 @@ public class Lex {
         state[0] = parseId(ch, state[0]);
         state[1] = parseKeyWord(ch, state[1]);
         state[2] = parseInt(ch, state[2]);
-        state[3] = parseIf(ch, state[2]);
+        state[3] = parseIf(ch, state[3]);
         state[4] = parseOperator(ch, state[4]);
         state[5] = parseMark(ch, state[5]);
         state[6] = parseSplit(ch, state[6]);
@@ -205,7 +205,6 @@ public class Lex {
             case '>':
                 if (state == 0) return 15;
                 return -1;
-
         }
         return -1;
     }
