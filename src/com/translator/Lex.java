@@ -44,17 +44,19 @@ public class Lex {
                     String substr = code.substring(this.pos, finalStatePos + 1);
                     int type_token = whenTypeOfToken(lastFinalState);
 
-                    try {
-                        index = this.hash_table[type_token].push(substr, substr);
-                    } catch (HashTableIsFull e) {
-                        e.printStackTrace();
+                    if (this.hash_table != null) {
+                        try {
+                            index = this.hash_table[type_token].push(substr, substr);
+                        } catch (HashTableIsFull e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     if (nline) this.read_line++;
                     this.pos = i;
 
-                    /*System.out.println("'" + substr + "' is " + decode(lastFinalState)
-                        + " (state: " + lastFinalState + ")\n");*/
+                    System.out.println("'" + substr + "' is " + decode(lastFinalState)
+                        + " (state: " + lastFinalState + ")");
                     writerToFile(this.read_line, lastFinalState, type_token, index);
                     return lastFinalState;
                 }
@@ -262,7 +264,7 @@ public class Lex {
                 case '\n':
                 case '\t':
                 case '\r':
-                    for (int j = pos; j > len; j++) {
+                    for (int j = pos; j < len; j++) {
                         switch (code.charAt(j)) {
                             case '\n':
                             case '\t':
@@ -288,8 +290,8 @@ public class Lex {
     }
 
     private void printErrorSubstring(int b, int e, int pos) {
-        System.out.println("ERROR:");
-        IOclass.println("ERROR:");
+        System.out.println("\nERROR: ############################");
+        IOclass.println("\nERROR: ############################");
 
         String substr = code.substring(b, e);
         IOclass.println(substr);
@@ -297,15 +299,15 @@ public class Lex {
 
         for (int i = b; i < e; i++) {
             if (i == pos) {
-                System.out.print('^');
-                IOclass.print("^");
+                System.out.println('^');
+                IOclass.println("^");
                 break;
             } else {
                 System.out.print('-');
                 IOclass.print("-");
             }
         }
-        System.out.println();
+        System.out.println("");
         IOclass.println("");
     }
 

@@ -1,4 +1,5 @@
-inteeeeeeeee /n l123456789 b123456789 int a1 = 12
-if heeyyy else return 101 buuugggaagggaaa
-git is cool() { lol; } ";"
-     1-+=1
+if heeyyy > 10 cool()
+a < 10
+b >= 1
+c<=2
+c == 123
