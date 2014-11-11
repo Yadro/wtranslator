@@ -101,8 +101,7 @@ public class Lex {
     }
 
     private int[] initState() {
-        int[] state = {0, 0, 0, 0, 0, 0, 0};
-        return state;
+        return new int[] {0, 0, 0, 0, 0, 0, 0};
     }
 
     private int[] whatIs(char ch, int[] state) {
@@ -256,8 +255,7 @@ public class Lex {
 
 
     private void showError(int pos) {
-        int len = code.length();
-
+        int len = this.length;
         for (int i = pos; i >= 0; i--) {
             switch (code.charAt(i)) {
                 case '\n':
@@ -268,11 +266,11 @@ public class Lex {
                             case '\n':
                             case '\t':
                             case '\r':
-                                printErrorSubstring(i + 1, j, pos);
+                                System.out.println(errorSubstring(i + 1, j, pos));
                                 return;
                         }
                     }
-                    printErrorSubstring(i + 1, len - 1, pos);
+                    System.out.println(errorSubstring(i + 1, len - 1, pos));
                     return;
             }
         }
@@ -281,33 +279,26 @@ public class Lex {
                 case '\n':
                 case '\t':
                 case '\r':
-                    printErrorSubstring(0, j, pos);
+                    System.out.println(errorSubstring(0, j, pos));
                     return;
             }
         }
-        printErrorSubstring(0, len - 1, pos);
+        System.out.println(errorSubstring(0, len - 1, pos));
     }
 
-    private void printErrorSubstring(int b, int e, int pos) {
-        System.out.println("\nERROR: ############################");
-        IOclass.println("\nERROR: ############################");
-
-        String substr = code.substring(b, e);
-        IOclass.println(substr);
-        System.out.println(substr);
+    private String errorSubstring(int b, int e, int pos) {
+        String err = "\nERROR: **********************************\n";
+        err += code.substring(b, e) + "\n";
 
         for (int i = b; i < e; i++) {
             if (i == pos) {
-                System.out.println('^');
-                IOclass.println("^");
+                err += "^\n";
                 break;
             } else {
-                System.out.print('-');
-                IOclass.print("-");
+                err += "-";
             }
         }
-        System.out.println("");
-        IOclass.println("");
+        return err;
     }
 
     private String decode(int code) {
@@ -337,7 +328,7 @@ public class Lex {
             case 54:
             case 55: return "SPLITS";
         }
-        return "null";
+        return "'null'";
     }
 
     private void writerToFile(int line, int state, int type_token, int index) {

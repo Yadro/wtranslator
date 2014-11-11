@@ -1,5 +1,6 @@
 if heeyyy > 10 cool()
-a < 10
+a <<< 10
 b >= 1
 c<=2
+lolol""""
 c == 123
