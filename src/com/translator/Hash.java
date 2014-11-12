@@ -6,38 +6,35 @@ import com.translator.exceptions.HashTableIsFull;
 public class Hash {
 
     private final String name_table;
-    private final String[] keys;
     private final String[] values;
     private final int size;
 
     public Hash(String name_table, int size) {
         this.name_table = name_table;
         this.size = size;
-        this.keys = new String[size+1];
         this.values = new String[size+1];
     }
 
 
-    public int push(String key, String value) throws HashTableIsFull {
+    public int push(String value) throws HashTableIsFull {
         boolean fl = false;
-        for(int hash = getHash(key), i = hash;; i++) {
+        for(int hash = getHash(value), i = hash;; i++) {
             if (i > this.size) {
                 i = 0;
                 fl = true;
             } else if (fl && i > hash) {
                 throw new HashTableIsFull();
             }
-            if (this.keys[i] == null) {
-                this.keys[i] = key;
+            if (this.values[i] == null) {
                 this.values[i] = value;
                 return i;
             }
         }
     }
 
-    public String find(String key) throws HashTableElemNotFound {
+    public String find(String value) throws HashTableElemNotFound {
         boolean fl = false;
-        for(int hash = getHash(key), i = hash;; i++) {
+        for(int hash = getHash(value), i = hash;; i++) {
             if (i > this.size) {
                 i = 0;
                 fl = true;
@@ -45,7 +42,7 @@ public class Hash {
                 throw new HashTableElemNotFound();
             }
 
-            if (this.keys[i].equals(key)) {
+            if (this.values[i].equals(value)) {
                 return this.values[i];
             }
         }
@@ -62,12 +59,11 @@ public class Hash {
     }
 
     public void print_table() {
-        System.out.println("Table " + name_table + ":");
         IOclass.println("\nTable " + name_table + ":");
         for (int i = 0; i < this.size; i++) {
-            if (keys[i] != null) {
-                System.out.println("[" + i + "]\t" + this.keys[i] + ": " + this.values[i]);
-                IOclass.println("[" + i + "]\t" + this.keys[i] + ": " + this.values[i]);
+            if (values[i] != null) {
+                System.out.println("[" + i + "]\t" + this.values[i]);
+                IOclass.println("[" + i + "]\t" + this.values[i]);
             }
         }
         return;

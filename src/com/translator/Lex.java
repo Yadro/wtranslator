@@ -46,7 +46,7 @@ public class Lex {
 
                     if (this.hash_table != null) {
                         try {
-                            index = this.hash_table[type_token].push(substr, substr);
+                            index = this.hash_table[type_token].push(substr);
                         } catch (HashTableIsFull e) {
                             e.printStackTrace();
                         }
@@ -254,7 +254,6 @@ public class Lex {
 
 
     private void showError(int pos) {
-        String err;
         int len = this.length;
         for (int i = pos; i >= 0; i--) {
             switch (code.charAt(i)) {
@@ -266,15 +265,11 @@ public class Lex {
                             case '\n':
                             case '\t':
                             case '\r':
-                                err = errorSubstring(i + 1, j, pos);
-                                IOclass.println(err);
-                                System.out.println(err);
+                                IOclass.println(errorSubstring(i + 1, j, pos));
                                 return;
                         }
                     }
-                    err = errorSubstring(i + 1, len - 1, pos);
-                    IOclass.println(err);
-                    System.out.println(err);
+                    IOclass.println(errorSubstring(i + 1, len - 1, pos));
                     return;
             }
         }
@@ -283,15 +278,11 @@ public class Lex {
                 case '\n':
                 case '\t':
                 case '\r':
-                    err = errorSubstring(0, j, pos);
-                    IOclass.println(err);
-                    System.out.println(err);
+                    IOclass.println(errorSubstring(0, j, pos));
                     return;
             }
         }
-        err = errorSubstring(0, len - 1, pos);
-        IOclass.println(err);
-        System.out.println(err);
+        IOclass.println(errorSubstring(0, len - 1, pos));
     }
 
     private String errorSubstring(int b, int e, int pos) {

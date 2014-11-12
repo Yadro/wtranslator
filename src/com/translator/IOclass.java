@@ -74,6 +74,7 @@ public class IOclass {
     }
 
     public static void print(String text) {
+        System.out.print(text);
         try {
             writer.print(text);
         } catch (Exception e){
