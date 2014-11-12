@@ -7,20 +7,22 @@ public class Lex {
     private final String code;
     private final int length;
     private int pos = 0;
-    private int read_line = 1;
-    private final Hash[] hash_table;
+    private boolean endOfFile = false;
+    private int readLine = 1;
+    private final Hash[] hashTable;
 
-    public Lex(String code, Hash[] hash_table) {
+    public Lex(String code, Hash[] hashTable) {
         this.code = code;
         this.length = this.code.length();
-        this.hash_table = hash_table;
+        this.hashTable = hashTable;
     }
 
     public Hash[] getHashTable() {
-        return hash_table;
+        return hashTable;
     }
 
     public int getNext() {
+        if (this.pos == length) return -1;
         boolean nline = false;
         int index = 0,
             finalState,
@@ -28,12 +30,18 @@ public class Lex {
             lastFinalState = -1;
         int[] state = initState();
 
-        for (int i = this.pos; i < length; i++) {
-            char ch = code.charAt(i);
-            if (ch == '\n') nline = true;
-            state = whatIs(ch, state);
+        for (int i = this.pos; i <= length; i++) {
+            char ch = '-';
+            if (i == length) {
+                finalState = -1;
+            } else {
+                ch = code.charAt(i);
+                if (ch == '\n') nline = true;
+                state = whatIs(ch, state);
+                finalState = finalState(state);
+            }
 
-            if ((finalState = finalState(state)) == -1) {
+            if (finalState == -1) {
                 if (lastFinalState == -1) {
                     showError(i);
                     this.pos = i + 1;
@@ -42,18 +50,18 @@ public class Lex {
                     String substr = code.substring(this.pos, finalStatePos + 1);
                     int type_token = whenTypeOfToken(lastFinalState);
 
-                    if (this.hash_table != null) {
+                    if (this.hashTable != null) {
                         try {
-                            index = this.hash_table[type_token].push(substr);
+                            index = this.hashTable[type_token].push(substr);
                         } catch (HashTableIsFull e) {
                             e.printStackTrace();
                         }
                     }
 
-                    if (nline && ch != '\n') this.read_line++;
+                    if (nline && ch != '\n') this.readLine++;
                     this.pos = i;
 
-                    writerToFile(substr, this.read_line, lastFinalState, type_token, index);
+                    writerToFile(substr, this.readLine, lastFinalState, type_token, index);
                     return lastFinalState;
                 }
             } else if (finalState > 0) {
@@ -81,7 +89,7 @@ public class Lex {
 
     private int finalState(int[] state) {
         if (state[1] >= 20) return state[1];      // KEYWORD   [20-23]
-        if (state[0] > 0) return 1;               // ID        [1]
+        if (state[0] > 0) return state[0];        // ID        [1]
         if (state[2] > 0) return 2;               // INT       [2]
         if (state[3] == 2) return 0;              // if '!'    [2]
         if (state[3] >= 10) return state[3];      // if        [10-15]
