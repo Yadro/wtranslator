@@ -21,15 +21,15 @@ public class LexTestJUnit extends Assert {
     }
 
     @Test
-    public void testINT() {
-        this.lex = new Lex("1234567", null);
+    public void testID() {
+        this.lex = new Lex("a", null);
         assertEquals(this.lex.getNext(), 1);
     }
 
     @Test
-    public void testID() {
-        this.lex = new Lex("a", null);
-        assertEquals(this.lex.getNext(), 1);
+    public void testINT() {
+        this.lex = new Lex("1234567", null);
+        assertEquals(this.lex.getNext(), 2);
     }
 
     @Test
@@ -103,7 +103,7 @@ public class LexTestJUnit extends Assert {
     @Test
     public void testIf14() {
         this.lex = new Lex("<", null);
-        assertEquals(this.lex.getNext(), 15);
+        assertEquals(this.lex.getNext(), 14);
     }
 
     @Test
@@ -156,55 +156,52 @@ public class LexTestJUnit extends Assert {
         assertEquals(this.lex.getNext(), 33);
     }
 
-
-    @Test
-    public void testSplitNewLine() {
-        this.lex = new Lex("\n", null);
-        assertEquals(this.lex.getNext(), 1);
-    }
-
-    @Test
-    public void testSplitTab() {
-        this.lex = new Lex("\t", null);
-        assertEquals(this.lex.getNext(), 2);
-    }
-
-    @Test
-    public void testSplitR() {
-        this.lex = new Lex("\r", null);
-        assertEquals(this.lex.getNext(), 3);
-    }
-
-    @Test
-    public void testSplitSpace() {
-        this.lex = new Lex(" ", null);
-        assertEquals(this.lex.getNext(), 4);
-    }
-
-
     @Test
     public void testMarkBeginFig() {
         this.lex = new Lex("{", null);
-        assertEquals(this.lex.getNext(), 1);
+        assertEquals(this.lex.getNext(), 41);
     }
 
     @Test
     public void testMarkEndFig() {
-        this.lex = new Lex("{", null);
-        assertEquals(this.lex.getNext(), 2);
+        this.lex = new Lex("}", null);
+        assertEquals(this.lex.getNext(), 42);
     }
 
     @Test
     public void testMarkBeginRound() {
         this.lex = new Lex("(", null);
-        assertEquals(this.lex.getNext(), 3);
+        assertEquals(this.lex.getNext(), 43);
     }
 
     @Test
     public void testMarkEndRound() {
         this.lex = new Lex(")", null);
-        assertEquals(this.lex.getNext(), 4);
+        assertEquals(this.lex.getNext(), 44);
     }
 
+    @Test
+    public void testSplitNewLine() {
+        this.lex = new Lex("\n", null);
+        assertEquals(this.lex.getNext(), 51);
+    }
+
+    @Test
+    public void testSplitTab() {
+        this.lex = new Lex("\t", null);
+        assertEquals(this.lex.getNext(), 52);
+    }
+
+    @Test
+    public void testSplitR() {
+        this.lex = new Lex("\r", null);
+        assertEquals(this.lex.getNext(), 53);
+    }
+
+    @Test
+    public void testSplitSpace() {
+        this.lex = new Lex(" ", null);
+        assertEquals(this.lex.getNext(), 54);
+    }
 
 }
