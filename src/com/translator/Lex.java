@@ -7,7 +7,7 @@ public class Lex {
     private final String code;
     private final int length;
     private int pos = 0;
-    private int read_line = 0;
+    private int read_line = 1;
     private final Hash[] hash_table;
 
     public Lex(String code, Hash[] hash_table) {
@@ -50,7 +50,7 @@ public class Lex {
                         }
                     }
 
-                    if (nline) this.read_line++;
+                    if (nline && ch != '\n') this.read_line++;
                     this.pos = i;
 
                     writerToFile(substr, this.read_line, lastFinalState, type_token, index);
