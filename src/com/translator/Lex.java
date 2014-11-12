@@ -15,7 +15,7 @@ public class Lex {
         this.length = this.code.length();
         this.hash_table = hash_table;
     }
-    //TODO don't work !=
+
     public Hash[] getHashTable() {
         return hash_table;
     }
@@ -83,7 +83,7 @@ public class Lex {
         if (state[1] >= 20) return state[1];      // KEYWORD   [20-23]
         if (state[0] > 0) return 1;               // ID        [1]
         if (state[2] > 0) return 2;               // INT       [2]
-        if (state[3] == 2) return state[3];       // if '!'    [2]
+        if (state[3] == 2) return 0;              // if '!'    [2]
         if (state[3] >= 10) return state[3];      // if        [10-15]
         if (state[4] > 0) return 30 + state[4];   // OPERATORS [31-33]
         if (state[5] > 0) return 40 + state[5];   // BRECKETS  [41-44]
