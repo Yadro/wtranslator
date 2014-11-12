@@ -21,7 +21,6 @@ public class Main {
         while ((state = lex.getNext()) != -1) {}
         for (int i = 0; i < COUNT_TABLES; i++) {
             lex.getHashTable()[i].print_table();
-            System.out.println();
         }
 
         IOclass.close();

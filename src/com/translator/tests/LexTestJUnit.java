@@ -22,11 +22,11 @@ public class LexTestJUnit {
     public void testID() {
         System.out.println("ID");
         this.lex = new Lex("ifelse return12", null);
-        if ((state = this.lex.getNext()) != 1) System.out.println("testID faild");
-        if ((state = this.lex.getNext()) != 54) System.out.println("testID faild - split");
-        if ((state = this.lex.getNext()) != 1) System.out.println("testID faild");
+        if ((state = this.lex.getNext()) != 1) System.out.println("testID faild1");
+        this.lex.getNext();
     }
 
+    /*
     @Test
     public void testINT() {
         this.lex = new Lex("1234567 00000", null);
@@ -88,5 +88,5 @@ public class LexTestJUnit {
         while ((state = this.lex.getNext()) != -1) {
             System.out.println(state);
         }
-    }
+    }*/
 }

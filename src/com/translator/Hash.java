@@ -62,7 +62,6 @@ public class Hash {
         IOclass.println("\nTable " + name_table + ":");
         for (int i = 0; i < this.size; i++) {
             if (values[i] != null) {
-                System.out.println("[" + i + "]\t" + this.values[i]);
                 IOclass.println("[" + i + "]\t" + this.values[i]);
             }
         }
