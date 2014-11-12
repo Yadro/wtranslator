@@ -15,7 +15,7 @@ public class Lex {
         this.length = this.code.length();
         this.hash_table = hash_table;
     }
-
+//TODO don't work !=
     public Hash[] getHashTable() {
         return hash_table;
     }
@@ -31,8 +31,6 @@ public class Lex {
         for (int i = this.pos; i < length; i++) {
             char ch = code.charAt(i);
             if (ch == '\n') nline = true;
-            else nline = false;
-
             state = whatIs(ch, state);
 
             if ((finalState = finalState(state)) == -1) {
@@ -55,7 +53,6 @@ public class Lex {
                     if (nline) this.read_line++;
                     this.pos = i;
 
-//                    System.out.println("'" + substr + "' is " + decode(lastFinalState) + " (state: " + lastFinalState + ")");
                     writerToFile(substr, this.read_line, lastFinalState, type_token, index);
                     return lastFinalState;
                 }
@@ -65,38 +62,6 @@ public class Lex {
             }
         }
         return -1;
-    }
-
-    public void parse(String code) {
-
-        int beginPos = 0,
-            finalState = 0,
-            finalStatePos = 0,
-            lastFinalState = 0;
-        int[] state = initState();
-
-        for (int i = 0; i < length; i++) {
-            state = whatIs(code.charAt(i), state);
-            if ((finalState = finalState(state)) == -1) {
-
-                if (lastFinalState == -1) {
-                    showError(i);
-                    beginPos = i+1;
-                    state = initState();
-                    lastFinalState = 0;
-                } else {
-                    System.out.println("'" + code.substring(beginPos, finalStatePos + 1) + "' is " + decode(lastFinalState));
-
-                    beginPos = finalStatePos + 1;
-                    lastFinalState = finalState;
-                    state = initState();
-                    i--;
-                }
-            } else if (finalState > 0) {
-                lastFinalState = finalState;
-                finalStatePos =  i;
-            }
-        }
     }
 
     private int[] initState() {
@@ -118,7 +83,7 @@ public class Lex {
         if (state[1] >= 20) return state[1];      // KEYWORD   [20-23]
         if (state[0] > 0) return 1;               // ID        [1]
         if (state[2] > 0) return 2;               // INT       [2]
-        if (state[3] >= 10) return  state[3];     // if        [10-15]
+        if (state[3] >= 10) return state[3];      // if        [10-15]
         if (state[4] > 0) return 30 + state[4];   // OPERATORS [31-33]
         if (state[5] > 0) return 40 + state[5];   // BRECKETS  [41-44]
         if (state[6] > 0) return 50 + state[6];   // SPLITS    [51-55]
@@ -153,7 +118,7 @@ public class Lex {
             case 'l': if (state == 2) return 5; return -1;
             case 's': if (state == 5) return 7; return -1;
             case 'r':
-                if (state == 0) return 6;
+                if (state == 0) return 3;
                 if (state == 9) return 10;
                 return -1;
             case 'n':
@@ -164,11 +129,13 @@ public class Lex {
                 if (state == 4) return 21;
                 if (state == 6) return 8;
                 return -1;
+            case 'u':
+                if (state == 8) return 9;
+                return -1;
             case 'e':
                 if (state == 0) return 2;
                 if (state == 3) return 6;
                 if (state == 7) return 22;
-                if (state == 8) return 9;
                 return -1;
         }
         return -1;
