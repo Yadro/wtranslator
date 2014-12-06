@@ -89,7 +89,7 @@ public class Lex {
 
     private int finalState(int[] state) {
         if (state[1] >= 20) return state[1];      // KEYWORD   [20-23]
-        if (state[0] > 0) return state[0];        // ID        [1]
+        if (state[0] > 0) return 1;               // ID        [1]
         if (state[2] > 0) return 2;               // INT       [2]
         if (state[3] == 2) return 0;              // if '!'    [2]
         if (state[3] >= 10) return state[3];      // if        [10-15]

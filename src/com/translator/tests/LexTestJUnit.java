@@ -21,59 +21,58 @@ public class LexTestJUnit extends Assert {
     }
 
     @Test
-    public void testID() {
-        this.lex = new Lex("a", null);
-        assertEquals(this.lex.getNext(), 1);
-    }
-
-    @Test
     public void testINT() {
         this.lex = new Lex("1234567", null);
         assertEquals(this.lex.getNext(), 2);
     }
 
     @Test
+    public void testID() {
+        this.lex = new Lex("a", null);
+        assertEquals(this.lex.getNext(), 1);
+    }
+
+    @Test
     public void testID2() {
         this.lex = new Lex("ab", null);
-        assertEquals(this.lex.getNext(), 2);
+        assertEquals(this.lex.getNext(), 1);
     }
 
     @Test
     public void testID3() {
         this.lex = new Lex("abc", null);
-        assertEquals(this.lex.getNext(), 3);
+        assertEquals(this.lex.getNext(), 1);
     }
 
     @Test
     public void testID4() {
         this.lex = new Lex("abcd", null);
-        assertEquals(this.lex.getNext(), 4);
+        assertEquals(this.lex.getNext(), 1);
     }
 
     @Test
     public void testID5() {
         this.lex = new Lex("abcde", null);
-        assertEquals(this.lex.getNext(), 5);
+        assertEquals(this.lex.getNext(), 1);
     }
 
     @Test
     public void testID6() {
         this.lex = new Lex("abcdef", null);
-        assertEquals(this.lex.getNext(), 6);
+        assertEquals(this.lex.getNext(), 1);
     }
 
     @Test
     public void testID7() {
         this.lex = new Lex("abcdefg", null);
-        assertEquals(this.lex.getNext(), 7);
+        assertEquals(this.lex.getNext(), 1);
     }
 
     @Test
     public void testID8() {
         this.lex = new Lex("abcdefgk", null);
-        assertEquals(this.lex.getNext(), 8);
+        assertEquals(this.lex.getNext(), 1);
     }
-
 
 
     @Test
