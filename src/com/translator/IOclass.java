@@ -2,9 +2,6 @@ package com.translator;
 
 import java.io.*;
 
-/**
- * Created by Will_i_am on 06.11.2014.
- */
 public class IOclass {
 
     private static String input;

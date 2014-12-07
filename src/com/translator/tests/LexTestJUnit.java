@@ -8,9 +8,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Created by i-am on 22.10.14.
- */
 public class LexTestJUnit extends Assert {
 
     private Lex lex;

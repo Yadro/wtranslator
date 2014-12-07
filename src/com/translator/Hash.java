@@ -15,10 +15,9 @@ public class Hash {
         this.values = new String[size+1];
     }
 
-
-    public int push(String value) throws HashTableIsFull {
+    public int add(String value) throws HashTableIsFull {
         boolean fl = false;
-        for(int hash = getHash(value), i = hash;; i++) {
+        for (int hash = getHash(value), i = hash;; i++) {
             if (i > this.size) {
                 i = 0;
                 fl = true;
@@ -34,7 +33,7 @@ public class Hash {
 
     public String find(String value) throws HashTableElemNotFound {
         boolean fl = false;
-        for(int hash = getHash(value), i = hash;; i++) {
+        for (int hash = getHash(value), i = hash;; i++) {
             if (i > this.size) {
                 i = 0;
                 fl = true;
@@ -58,13 +57,12 @@ public class Hash {
         return (int)(key % this.size);
     }
 
-    public void print_table() {
+    public void printTable() {
         IOclass.println("\nTable " + name_table + ":");
         for (int i = 0; i < this.size; i++) {
             if (values[i] != null) {
                 IOclass.println("[" + i + "]\t" + this.values[i]);
             }
         }
-        return;
     }
 }

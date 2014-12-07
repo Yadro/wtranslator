@@ -7,7 +7,6 @@ public class Lex {
     private final String code;
     private final int length;
     private int pos = 0;
-    private boolean endOfFile = false;
     private int readLine = 1;
     private final Hash[] hashTable;
 
@@ -52,7 +51,7 @@ public class Lex {
 
                     if (this.hashTable != null) {
                         try {
-                            index = this.hashTable[type_token].push(substr);
+                            index = this.hashTable[type_token].add(substr);
                         } catch (HashTableIsFull e) {
                             e.printStackTrace();
                         }
